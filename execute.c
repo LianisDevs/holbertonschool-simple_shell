@@ -18,10 +18,7 @@ int execute(argv_data_t *argv)
 
 	/*check if fork failed*/
 	if (child_pid == -1)
-	{
-		perror("Error:");
-		return(1);
-	}
+		return(0);
 
 	/*my_pid = getpid();*/
 
@@ -32,12 +29,9 @@ int execute(argv_data_t *argv)
 		status = execve(argv->args[0], argv->args, environ);
 
 		if (status == -1)
-			printf("Execve failed\n");
-
-		printf("after\n");
-		exit(EXIT_SUCCESS);
+			return (0);
 	}	
-	else
+	else 
 	{
 		/*parent does*/
 		wait(&status);

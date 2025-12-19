@@ -29,6 +29,9 @@ int main(void)
 		/*call function to read line*/
 		line = read_line();
 
+		if (line == NULL)
+			return (1);
+
 		/*call function to split the line into arguments/ tokens*/
 		argv = split_line(line);
 
@@ -37,6 +40,8 @@ int main(void)
 		 * return value is stored in status which will determine when to exit
 		 */
 		status = execute(argv);
+		if (status == 0)
+			return (1);
 
 		free(line);
 		argv->position = 0;
