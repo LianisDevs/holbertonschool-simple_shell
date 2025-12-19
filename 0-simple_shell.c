@@ -39,6 +39,12 @@ int main(void)
 		status = execute(argv);
 
 		free(line);
+		argv->position = 0;
+		while (argv->args[argv->position] != NULL)
+		{
+			free(argv->args[argv->position]);
+			argv->position++;
+		}
 		free(argv->args);
 		free(argv);
 	} while (status);

@@ -9,13 +9,8 @@ char *read_line(void)
 
 	if (getline(&line, &length, stdin) == -1)
 	{
-		if (feof(stdin)) /*don't know if I can use feof*/
-			exit(EXIT_SUCCESS);
-		else
-		{
-			perror("readline");
-			exit(EXIT_FAILURE);
-		}
+		perror("readline");
+		exit(EXIT_FAILURE);
 	}
 	return (line);
 }
