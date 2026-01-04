@@ -11,7 +11,10 @@ void split_line(char *line, argv_data_t *argv)
 	result = strtok(line, delim);
 
 	if (!result)
+	{
+		argv->args[0] = NULL;
 		return;
+	}
 
 	argv->args[argv->position] = strdup(result);
 

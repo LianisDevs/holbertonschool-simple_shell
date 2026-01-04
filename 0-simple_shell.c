@@ -11,7 +11,8 @@ int main (void) {
 	char *line = NULL;
 	argv_data_t *argv;
 	pid_t child_pid;
-	int execve_result, status;
+	int execve_result = 0;
+	int status;
 
 	while (true)
 	{
@@ -42,7 +43,8 @@ int main (void) {
 		}
 		if (child_pid == 0)
 		{
-			execve_result = execve(argv->args[0], argv->args, environ);
+			if (argv->args[0] != NULL)
+				execve_result = execve(argv->args[0], argv->args, environ);
 
 			if (execve_result == -1)
 				return (1);
