@@ -11,10 +11,14 @@ typedef struct argv_data
 	int position;
 } argv_data_t;
 
-char *read_line(void);
+char *read_line(char *line);
 
-argv_data_t *split_line(char *line);
+void split_line(char *line, argv_data_t *argv);
 
-int execute(argv_data_t *argv);
+argv_data_t *setup_argv(argv_data_t *argv);
+
+void cleanup_argv(argv_data_t *argv);
+
+/* int execute(argv_data_t *argv);*/
 
 #endif

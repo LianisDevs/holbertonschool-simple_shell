@@ -3,37 +3,28 @@
 #include <string.h>
 #include "main.h"
 
-argv_data_t *split_line(char *line)
+void split_line(char *line, argv_data_t *argv)
 {
-	argv_data_t *argv;
-	char *token;
-	const char *delimiters = " \n";
+	char *result;
+	const char *delim = " \n";
 
-	argv = (argv_data_t *) malloc(sizeof(argv_data_t));
+	result = strtok(line, delim);
 
-	if (argv == NULL)
-		return (NULL);
+	if (!result)
+		return;
 
-	argv->args = (char **)malloc(1024 * sizeof(char *));
+	argv->args[argv->position] = strdup(result);
 
-	if (argv->args == NULL)
-		return (NULL);
-
-	argv->position = 0;
-
-	token = strtok(line, delimiters);
-	argv->args[argv->position] = strdup(token);
-	argv->position++;
-
-	while (token != NULL)
+	while (result)
 	{
-		token = strtok(NULL, delimiters);
-		if (token == NULL)
-			break;
-
-		argv->args[argv->position] = strdup(token);
 		argv->position++;
+
+		result = strtok(NULL, delim);
+
+		if (result == NULL)
+			argv->args[argv->position] = result;
+		else
+			argv->args[argv->position] = strdup(result);
 	}
-	argv->position = 0;
-	return (argv);
+	return;
 }
