@@ -1,12 +1,10 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "main.h"
 
 void split_line(char *line, argv_data_t *argv)
 {
 	char *result;
 	const char *delim = " \n";
+
 
 	result = strtok(line, delim);
 
@@ -29,5 +27,4 @@ void split_line(char *line, argv_data_t *argv)
 		else
 			argv->args[argv->position] = strdup(result);
 	}
-	return;
 }

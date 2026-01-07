@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "main.h"
 
 argv_data_t *setup_argv(argv_data_t *argv)
@@ -18,6 +16,7 @@ argv_data_t *setup_argv(argv_data_t *argv)
 	}
 
 	argv->position = 0;
+	argv->path = NULL;
 	return (argv);
 }
 
@@ -32,6 +31,12 @@ void cleanup_argv(argv_data_t *argv)
 	}
 	free(argv->args);
 	argv->args = NULL;
+
+	if (argv->path)
+	{
+		free(argv->path);
+		argv->path = NULL;
+	}
 
 	free(argv);
 	argv = NULL;
