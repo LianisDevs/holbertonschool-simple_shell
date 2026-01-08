@@ -85,6 +85,10 @@ int main(void)
 		}
 		cleanup_command_queue(command_queue);
 		command_queue = NULL;
+
+		if (isatty(0) == 0)
+			return (0);
+
 	}
 	return (0);
 }
