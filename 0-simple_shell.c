@@ -60,10 +60,11 @@ int main(void)
 			
 				if (find_path_result == 1)
 				{
+					printf("./hsh: 1: %s: not found\n", argv->args[0]);
 					cleanup_argv(argv);
 					cleanup_command_queue(command_queue);
 					free(line);
-					return (1);
+					exit (127);
 				}
 			}
 
