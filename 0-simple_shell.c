@@ -54,7 +54,7 @@ int main(void)
 			/*split user's input*/
 			split_line(line, argv);
 			
-			if (stat(argv->args[0], &statbuff) == -1)
+			if (valid_env(argv, command_queue, line) == 1 && stat(argv->args[0], &statbuff) == -1)
 			{
 				find_path_result = find_path(argv);
 			

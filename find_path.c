@@ -69,3 +69,28 @@ void get_path(argv_data_t *argv)
 	return;
 }
 
+int valid_env(argv_data_t *argv, command_queue_t *command_queue, char *line)
+{
+	int is_path;
+	int i;
+	size_t n = 5;
+	
+	i = 0;
+	while(environ[i] != NULL)
+	{
+		/*comparing i element in environ array for PATH= which is n size since we don't care at this stage about the rest of the PATH string*/
+		is_path = strncmp(environ[i], "PATH=", n);
+
+		/* PATH= string found*/
+		if (is_path == 0)
+			return (1);
+
+		i++;
+	}
+
+	fprintf(stderr, "./hsh: 1: %s: not found\n", argv->args[0]);
+	cleanup_argv(argv);
+	cleanup_command_queue(command_queue);
+	free(line);
+	exit (127);
+}

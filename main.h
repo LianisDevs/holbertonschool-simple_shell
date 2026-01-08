@@ -30,8 +30,6 @@ typedef struct command_queue
 
 command_queue_t *read_line(command_queue_t *command_queue);
 
-command_queue_t *split_input_for_queue(command_queue_t *command_queue);
-
 void split_line(char *line, argv_data_t *argv);
 
 argv_data_t *setup_argv(argv_data_t *argv);
@@ -47,6 +45,8 @@ int execute(argv_data_t *argv);
 int find_path(argv_data_t *argv);
 
 void get_path(argv_data_t *argv);
+
+int valid_env(argv_data_t *argv, command_queue_t *command_queue, char *line);
 
 int split_search_path(argv_data_t *argv);
 
