@@ -2,7 +2,7 @@
 
 command_queue_t *setup_command_queue(command_queue_t *command_queue)
 {
-	int queue_size = 10;
+	int queue_size = 50;
 
 	command_queue = (command_queue_t *)malloc(sizeof(command_queue_t));
 
