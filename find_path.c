@@ -22,10 +22,9 @@ int find_path(argv_data_t *argv)
  */ 
 void get_path(argv_data_t *argv)
 {
-	int is_path, is_path1;
+	int is_path;
 	int i;
 	size_t n = 5;
-	size_t m = 6;
 	char *path, *path_copy;
 	const char *delim = "=";
 
@@ -34,15 +33,20 @@ void get_path(argv_data_t *argv)
 	{
 		/*comparing i element in environ array for PATH= which is n size since we don't care at this stage about the rest of the PATH string*/
 		is_path = strncmp(environ[i], "PATH=", n);
-		is_path1 = strncmp(environ[i], "PATH1=", m);
 
 		/* PATH= string found*/
-		if (is_path == 0 && is_path1 != 0)
+		if (is_path == 0)
 		{
 			path_copy = strdup(environ[i]);
 
 			/*this gives us just PATH before the =, need to call strtok again*/
 			path = strtok(path_copy, delim);
+
+			if (strcmp(path, "PATH") != 0)
+			{
+				free(path_copy);
+				return;
+			}
 
 			/*this gives us the string after the =, actual path we want to return*/
 			path = strtok(NULL, delim);
