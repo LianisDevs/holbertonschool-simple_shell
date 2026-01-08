@@ -14,7 +14,7 @@ command_queue_t *read_line(command_queue_t *command_queue)
 	
 	command_queue->commands[0] = NULL;
 
-	/*checking if tty */
+	/*checking if tty = interactive mode -------->*/
 	if (isatty(0) == 1)
 	{
 		printf("(: ");
@@ -29,9 +29,11 @@ command_queue_t *read_line(command_queue_t *command_queue)
 		return (command_queue);
 	}
 
+
+	/* non interactive mode ------>*/
 	while ((line_read = getline(&buff, &length, stdin)) != -1)
 	{
-		if (buff)
+		if (strcmp(buff, "\n\0") != 0)
 		{
 			command_queue->commands[command_queue->position] = strdup(buff);
 			command_queue->position++;
