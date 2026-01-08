@@ -22,13 +22,25 @@ typedef struct argv_data
 	char *path;
 } argv_data_t;
 
-char *read_line(char *line);
+typedef struct command_queue
+{
+	char **commands;
+	int position;
+} command_queue_t;
+
+command_queue_t *read_line(command_queue_t *command_queue);
+
+command_queue_t *split_input_for_queue(command_queue_t *command_queue);
 
 void split_line(char *line, argv_data_t *argv);
 
 argv_data_t *setup_argv(argv_data_t *argv);
 
+command_queue_t *setup_command_queue(command_queue_t *command_queue);
+
 void cleanup_argv(argv_data_t *argv);
+
+void cleanup_command_queue(command_queue_t *command_queue);
 
 int execute(argv_data_t *argv);
 

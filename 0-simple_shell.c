@@ -8,62 +8,83 @@
 
 int main(void)
 {
-	char *line = NULL;
+	command_queue_t *command_queue = NULL;
+	char *line;
 	argv_data_t *argv;
 	int execute_result, find_path_result;
 	struct stat statbuff;
 
 	while (true)
 	{
+		command_queue = setup_command_queue(command_queue);
+		if (command_queue == NULL)
+			return (1);
+
 		/*get the user's input*/
-		line = read_line(line);
-
-		if (!line)
-			return (0);
-
-		/* TODO... this will be exit condition later*/
-		if (strcmp(line, "exit\n") == 0)
+		command_queue = read_line(command_queue);
+		
+		if (!command_queue->commands[0])
 		{
-			free(line);
-			return (0);
-		};
-
-		/*setup the argv array*/
-		argv = setup_argv(argv);
-
-		if (argv == NULL)
-		{
-			free(line);
+			cleanup_command_queue(command_queue);
 			return (1);
 		}
 
-		/*split user's input*/
-		split_line(line, argv);
-		
-		if (stat(argv->args[0], &statbuff) == -1)
+		while (command_queue->commands[command_queue->position] != NULL)
 		{
-			find_path_result = find_path(argv);
-		
-			if (find_path_result == 1)
+			line = strdup(command_queue->commands[command_queue->position]);
+
+			/* TODO... this will be exit condition later*/
+			if (strcmp(line, "exit\n") == 0)
+			{
+				free(line);
+				cleanup_command_queue(command_queue);
+				return (0);
+			}
+
+			/*setup the argv array*/
+			argv = setup_argv(argv);
+
+			if (argv == NULL)
+			{
+				free(line);
+				cleanup_command_queue(command_queue);
+				return (1);
+			}
+
+			/*split user's input*/
+			split_line(line, argv);
+			
+			if (stat(argv->args[0], &statbuff) == -1)
+			{
+				find_path_result = find_path(argv);
+			
+				if (find_path_result == 1)
+				{
+					cleanup_argv(argv);
+					cleanup_command_queue(command_queue);
+					free(line);
+					return (1);
+				}
+			}
+
+			execute_result = execute(argv);
+
+			if (execute_result == 1) 
 			{
 				cleanup_argv(argv);
+				cleanup_command_queue(command_queue);
 				free(line);
 				return (1);
 			}
-		}
-		execute_result = execute(argv);
 
-		if (execute_result == 1) 
-		{
+			/*free all mallocs*/
 			cleanup_argv(argv);
 			free(line);
-			return (1);
+			line = NULL;
+			command_queue->position++;
 		}
-
-		/*free all mallocs*/
-		cleanup_argv(argv);
-		free(line);
-		line = NULL;
+		cleanup_command_queue(command_queue);
+		command_queue = NULL;
 	}
 	return (0);
 }

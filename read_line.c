@@ -6,20 +6,44 @@
 * Return: line or NULL on failure
 */
 
-char *read_line(char *line)
+command_queue_t *read_line(command_queue_t *command_queue)
 {
+	char *buff = NULL;
 	size_t length = 0;
+	ssize_t line_read;
+	
+	command_queue->commands[0] = NULL;
 
-	/*checking if tty to print $*/
+	/*checking if tty */
 	if (isatty(0) == 1)
-		printf("$ ");
-
-	if (getline(&line, &length, stdin) == -1)
 	{
-		/*if getline fails then free and return*/
-		free(line);
-		line = NULL;
-		return (NULL);
+		printf("(: ");
+		line_read = getline(&buff, &length, stdin);
+
+		if (line_read != -1)
+		{
+			command_queue->commands[command_queue->position] = strdup(buff);
+			free(buff);
+			buff = NULL;
+		}
+		return (command_queue);
 	}
-	return (line);
+
+	while ((line_read = getline(&buff, &length, stdin)) != -1)
+	{
+		if (buff)
+		{
+			command_queue->commands[command_queue->position] = strdup(buff);
+			command_queue->position++;
+
+			free(buff);
+			buff = NULL;
+		}
+	}
+	free(buff);
+	buff = NULL;
+
+	command_queue->position = 0;
+	return (command_queue);
+
 }
