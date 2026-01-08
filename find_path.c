@@ -45,6 +45,12 @@ void get_path(argv_data_t *argv)
 			/*this gives us the string after the =, actual path we want to return*/
 			path = strtok(NULL, delim);
 
+			if (strcmp(path, "") == 0)
+			{
+				free(path_copy);
+				argv->path = NULL;
+				return;
+			}
 			argv->path = strdup(path);
 			free(path_copy);
 			return;
