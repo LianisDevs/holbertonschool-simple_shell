@@ -33,6 +33,12 @@ int main(void)
 
 			/*split user's input*/
 			split_line(argv);
+
+			if (argv->args[0] == NULL) {
+				argv = reset_argv(argv);
+				argv->command_queue->position++;
+				continue;
+			}
 			
 			if ((find_path_result = find_path(argv)))
 			{
