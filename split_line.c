@@ -1,12 +1,12 @@
 #include "main.h"
 
-void split_line(char *line, argv_data_t *argv)
+void split_line(argv_data_t *argv)
 {
 	char *result;
 	const char *delim = " \n";
 
 
-	result = strtok(line, delim);
+	result = strtok(argv->line, delim);
 
 	if (!result)
 	{

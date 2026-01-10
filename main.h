@@ -15,40 +15,47 @@ extern char **environ;
 
 typedef struct stat stat_t;
 
-typedef struct argv_data
-{
-	char **args;
-	int position;
-	char *path;
-} argv_data_t;
-
-typedef struct command_queue
+typedef struct queue
 {
 	char **commands;
 	int position;
 } command_queue_t;
 
-command_queue_t *read_line(command_queue_t *command_queue);
+typedef struct argv_data
+{
+	char **args;
+	int position;
+	char *path;
+	char *line;
+	command_queue_t *command_queue;
+} argv_data_t;
 
-void split_line(char *line, argv_data_t *argv);
+/*setup functions*/
+argv_data_t *setup_argv(argv_data_t *);
+argv_data_t *setup_command_queue(argv_data_t *);
 
-argv_data_t *setup_argv(argv_data_t *argv);
+/*handle input functions*/
+argv_data_t *read_line(argv_data_t *);
+void split_line(argv_data_t *);
 
-command_queue_t *setup_command_queue(command_queue_t *command_queue);
+int find_path(argv_data_t *);
+void get_path(argv_data_t *);
+void valid_env(argv_data_t *);
 
-void cleanup_argv(argv_data_t *argv);
+int execute(argv_data_t *);
 
-void cleanup_command_queue(command_queue_t *command_queue);
+int split_search_path(argv_data_t *);
+int search_dir(char *, argv_data_t *);
 
-int execute(argv_data_t *argv);
+/*cleanup functions: */
 
-int find_path(argv_data_t *argv);
+argv_data_t *cleanup_argv(argv_data_t *);
+command_queue_t *cleanup_command_queue(argv_data_t *);
+argv_data_t *reset_argv(argv_data_t *);
 
-void get_path(argv_data_t *argv);
+void argv_printer(argv_data_t *argv);
 
-int valid_env(argv_data_t *argv, command_queue_t *command_queue, char *line);
-
-int split_search_path(argv_data_t *argv);
-
-int search_dir(char *split_path, argv_data_t *argv);
+void clean_exit_success(argv_data_t *);
+void clean_exit_general(argv_data_t *);
+void clean_exit_command_not_found(argv_data_t *);
 #endif

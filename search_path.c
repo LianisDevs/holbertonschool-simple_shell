@@ -30,6 +30,7 @@ int search_dir(char *split_path, argv_data_t *argv)
 	int result, close_check;
 	char *temp;
 	char buffer[1024];
+	stat_t sb;
 
 	dir = opendir(split_path);
 
@@ -45,6 +46,9 @@ int search_dir(char *split_path, argv_data_t *argv)
 			free(argv->args[0]);
 
 			sprintf(buffer, "%s/%s", split_path, temp);
+
+			if (stat(buffer, &sb) == -1)
+				clean_exit_command_not_found(argv);
 
 			argv->args[0] = strdup(buffer);
 

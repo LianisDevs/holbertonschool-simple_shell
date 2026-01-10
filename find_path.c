@@ -3,7 +3,6 @@
 int find_path(argv_data_t *argv)
 {
 	int result;
-	
 
 	get_path(argv);
 	if (argv->path == NULL)
@@ -69,7 +68,7 @@ void get_path(argv_data_t *argv)
 	return;
 }
 
-int valid_env(argv_data_t *argv, command_queue_t *command_queue, char *line)
+void valid_env(argv_data_t *argv)
 {
 	int is_path;
 	int i;
@@ -83,14 +82,9 @@ int valid_env(argv_data_t *argv, command_queue_t *command_queue, char *line)
 
 		/* PATH= string found*/
 		if (is_path == 0)
-			return (1);
+			return;
 
 		i++;
 	}
-
-	fprintf(stderr, "./hsh: 1: %s: not found\n", argv->args[0]);
-	cleanup_argv(argv);
-	cleanup_command_queue(command_queue);
-	free(line);
-	exit (127);
+	clean_exit_command_not_found(argv);
 }

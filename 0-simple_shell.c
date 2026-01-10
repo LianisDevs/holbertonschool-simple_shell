@@ -8,88 +8,55 @@
 
 int main(void)
 {
-	command_queue_t *command_queue = NULL;
-	char *line;
-	argv_data_t *argv;
+	argv_data_t *argv = NULL;
 	int execute_result, find_path_result;
-	struct stat statbuff;
 
 	while (true)
 	{
-		command_queue = setup_command_queue(command_queue);
-		if (command_queue == NULL)
-			return (1);
+		/*setup argv*/
+		argv = setup_argv(argv);
 
-		/*get the user's input*/
-		command_queue = read_line(command_queue);
+		/*get user's input*/
+		argv = read_line(argv);
 		
-		if (!command_queue->commands[0])
-		{
-			cleanup_command_queue(command_queue);
-			return (1);
-		}
+		/*check read_line failure*/
+		if (!argv->command_queue->commands[0])
+			clean_exit_general(argv);
 
-		while (command_queue->commands[command_queue->position] != NULL)
+		while (argv->command_queue->commands[argv->command_queue->position] != NULL)
 		{
-			line = strdup(command_queue->commands[command_queue->position]);
+			argv->line = strdup(argv->command_queue->commands[argv->command_queue->position]);
 
 			/* TODO... this will be exit condition later*/
-			if (strcmp(line, "exit\n") == 0)
-			{
-				free(line);
-				cleanup_command_queue(command_queue);
-				return (0);
-			}
-
-			/*setup the argv array*/
-			argv = setup_argv(argv);
-
-			if (argv == NULL)
-			{
-				free(line);
-				cleanup_command_queue(command_queue);
-				return (1);
-			}
+			if (strcmp(argv->line, "exit\n") == 0)
+				clean_exit_success(argv);
 
 			/*split user's input*/
-			split_line(line, argv);
+			split_line(argv);
 			
-			if (valid_env(argv, command_queue, line) == 1 && stat(argv->args[0], &statbuff) == -1)
+			if ((find_path_result = find_path(argv)))
 			{
-				find_path_result = find_path(argv);
-			
+				valid_env(argv);
+
 				if (find_path_result == 1)
-				{
-					fprintf(stderr, "./hsh: 1: %s: not found\n", argv->args[0]);
-					cleanup_argv(argv);
-					cleanup_command_queue(command_queue);
-					free(line);
-					exit (127);
-				}
+					clean_exit_command_not_found(argv);
 			}
 
 			execute_result = execute(argv);
 
 			if (execute_result == 1) 
-			{
-				cleanup_argv(argv);
-				cleanup_command_queue(command_queue);
-				free(line);
-				return (1);
-			}
+				clean_exit_general(argv);
 
 			/*free all mallocs*/
-			cleanup_argv(argv);
-			free(line);
-			line = NULL;
-			command_queue->position++;
+			argv = reset_argv(argv);
+			argv->command_queue->position++;
 		}
-		cleanup_command_queue(command_queue);
-		command_queue = NULL;
+
+		argv = cleanup_argv(argv);
 
 		if (isatty(0) == 0)
-			return (0);
-
+			exit(EXIT_SUCCESS);
 	}
-	return (0);
+
+	exit(EXIT_SUCCESS);
 }
