@@ -9,13 +9,6 @@ argv_data_t *setup_argv(argv_data_t *argv)
 	if(!argv)
 		exit(EXIT_FAILURE);
 
-	argv->args = (char **)malloc(50 * sizeof(char *));
-
-	if(!argv->args)
-	{
-		free(argv);
-		exit(EXIT_FAILURE);
-	}
 
 	setup_argv_args(argv);
 	argv->path = NULL;
@@ -69,6 +62,7 @@ argv_data_t *reset_argv(argv_data_t *argv)
 	free(argv->args);
 	argv->args = NULL;
 	argv->line = NULL;
+	setup_argv_args(argv);
 
 	argv->position = 0;
 
@@ -83,6 +77,8 @@ void argv_printer(argv_data_t *argv)
 		return;
 	}
 	if (argv != NULL) {
+		printf("Argv -> line: %s", argv->line);
+		printf("Argv -> position : %d", argv->position);
 		argv->position = 0;
 		if (argv->args != NULL) {
 			while (argv->position < queue_size) {
@@ -112,6 +108,14 @@ void argv_printer(argv_data_t *argv)
 void *setup_argv_args(argv_data_t *argv)
 {
 	int queue_size = 50;
+	
+	argv->args = (char **)malloc(50 * sizeof(char *));
+
+	if(!argv->args)
+	{
+		free(argv);
+		exit(EXIT_FAILURE);
+	}
 
 	argv->position = 0;
 

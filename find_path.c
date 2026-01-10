@@ -2,15 +2,19 @@
 
 int find_path(argv_data_t *argv)
 {
+	stat_t sb;
 	int result;
 
-	get_path(argv);
-	if (argv->path == NULL)
-		return (1);
+	if (stat(argv->args[0], &sb) == -1)
+	{
+		get_path(argv);
+		if (argv->path == NULL)
+			return (1);
 
-	result = split_search_path(argv);
-	if (result == 1)
-		return (1);
+		result = split_search_path(argv);
+		if (result == 1)
+			return (1);
+	}
 
 	return (0);
 }

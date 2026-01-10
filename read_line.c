@@ -15,7 +15,7 @@ argv_data_t *read_line(argv_data_t *argv)
 	argv->command_queue->commands[0] = NULL;
 
 	/*checking if tty = interactive mode*/
-	if (isatty(STDOUT_FILENO))
+	if (isatty(0) == 1)
 	{
 		printf("(: ");
 		line_read = getline(&buff, &length, stdin);
