@@ -42,7 +42,7 @@ void get_path(argv_data_t *argv)
 			/*this gives us just PATH before the =, need to call strtok again*/
 			path = strtok(path_copy, delim);
 
-			if (strcmp(path, "PATH") != 0)
+			if (strcmp(path, "PATH1") == 0)
 			{
 				free(path_copy);
 				return;
@@ -72,12 +72,23 @@ void get_path(argv_data_t *argv)
 int valid_env(argv_data_t *argv, command_queue_t *command_queue, char *line)
 {
 	int is_path;
-	int i;
+	int i = 0;
 	size_t n = 5;
 	stat_t statbuff;
 	
 	if (stat(argv->args[0], &statbuff) != -1)
 	{
+		while(environ[i] != NULL) 
+		{
+			if(strncmp(environ[i++], "PATH1=", 6) == 0)
+			{
+				fprintf(stderr, "./hsh: 1: %s: not found\n", argv->args[0]);
+				cleanup_argv(argv);
+				cleanup_command_queue(command_queue);
+				free(line);
+				exit (127);
+			}
+		}
 		return (0);
 	}
 	i = 0;
