@@ -80,7 +80,7 @@ command_queue_t *proccess_command_queue(command_queue_t *command_queue)
 				exit_command_not_found(argv, command_queue, line);
 		}
 
-		execute_result = execute(argv);
+		execute_result = execute(argv, command_queue, line);
 		if (execute_result == 1)
 			exit_general_error(argv, command_queue, line);
 

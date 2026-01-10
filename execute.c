@@ -6,7 +6,7 @@
  * Return: 0 on success 1 on failure
  */
 
-int execute(argv_data_t *argv)
+int execute(argv_data_t *argv, command_queue_t *command_queue, char *line)
 {
 	pid_t child_pid;
 	int status;
@@ -25,10 +25,18 @@ int execute(argv_data_t *argv)
 			execve_result = execve(argv->args[0], argv->args, environ);
 
 		if (execve_result == -1)
+		{
+			printf("execve was indeed -1\n");
 			return (1);
-	}
-	else
+		}
+	} else
+	{
 		wait(&status);
-
+		if (WIFEXITED(status))
+		{
+			if ((status = WEXITSTATUS(status)) == 2)
+				exit_command_failed(argv, command_queue, line, status);
+		}
+	}
 	return (0);
 }

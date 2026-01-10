@@ -65,5 +65,6 @@ void get_path(argv_data_t *);
 int split_search_path(argv_data_t *);
 int search_dir(argv_data_t *, char *);
 
-int execute(argv_data_t *);
+int execute(argv_data_t *, command_queue_t *, char *);
+void exit_command_failed(argv_data_t *, command_queue_t *, char *, int);
 #endif
