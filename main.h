@@ -24,6 +24,7 @@ typedef struct queue
 typedef struct argv_data
 {
 	char **args;
+	char *getline_buff;
 	int position;
 	char *path;
 	char *line;

@@ -13,6 +13,7 @@ argv_data_t *setup_argv(argv_data_t *argv)
 	setup_argv_args(argv);
 	argv->path = NULL;
 	argv->line = NULL;
+	argv->getline_buff = NULL;
 
 	setup_command_queue(argv);
 
@@ -42,6 +43,7 @@ argv_data_t *cleanup_argv(argv_data_t *argv)
 	argv->command_queue = NULL;
 	free(argv->line);
 	free(argv->path);
+	free(argv->getline_buff);
 	free(argv);
 	argv = NULL;
 

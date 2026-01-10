@@ -1,5 +1,8 @@
 #include "main.h"
 
+void INThandler(int sig);
+
+argv_data_t *argv = NULL;
 /**
  * main - main file for simple shell
  *		  contains the forever while loop to run the shell
@@ -8,8 +11,8 @@
 
 int main(void)
 {
-	argv_data_t *argv = NULL;
 	int execute_result, find_path_result;
+	signal(SIGINT, INThandler); 
 
 	while (true)
 	{
@@ -40,13 +43,11 @@ int main(void)
 				continue;
 			}
 			
-			if ((find_path_result = find_path(argv)))
-			{
-				valid_env(argv);
+			find_path_result = find_path(argv);
+			valid_env(argv);
 
-				if (find_path_result == 1)
-					clean_exit_command_not_found(argv);
-			}
+			if (find_path_result == 1)
+				clean_exit_command_not_found(argv);
 
 			execute_result = execute(argv);
 
@@ -65,4 +66,9 @@ int main(void)
 	}
 
 	exit(EXIT_SUCCESS);
+}
+
+void INThandler(int sig) {
+	(void) sig;
+	clean_exit_success(argv);
 }
