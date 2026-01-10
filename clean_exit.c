@@ -51,5 +51,5 @@ void exit_command_not_found(argv_data_t *argv,
 	free(line);
 	cleanup_command_queue(command_queue);
 	cleanup_argv(argv);
-	exit(127);
+	exit(2);
 }
