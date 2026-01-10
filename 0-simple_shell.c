@@ -12,7 +12,6 @@ int main(void)
 	char *line;
 	argv_data_t *argv;
 	int execute_result, find_path_result;
-	struct stat statbuff;
 
 	while (true)
 	{
@@ -54,7 +53,7 @@ int main(void)
 			/*split user's input*/
 			split_line(line, argv);
 			
-			if (valid_env(argv, command_queue, line) == 1 && stat(argv->args[0], &statbuff) == -1)
+			if (valid_env(argv, command_queue, line) == 1)
 			{
 				find_path_result = find_path(argv);
 			

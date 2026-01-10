@@ -74,7 +74,12 @@ int valid_env(argv_data_t *argv, command_queue_t *command_queue, char *line)
 	int is_path;
 	int i;
 	size_t n = 5;
+	stat_t statbuff;
 	
+	if (stat(argv->args[0], &statbuff) != -1)
+	{
+		return (0);
+	}
 	i = 0;
 	while(environ[i] != NULL)
 	{
