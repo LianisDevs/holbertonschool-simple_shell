@@ -1,10 +1,9 @@
 #include "main.h"
 
-void split_line(char *line, argv_data_t *argv)
+void split_line(argv_data_t *argv, char *line)
 {
 	char *result;
 	const char *delim = " \n";
-
 
 	result = strtok(line, delim);
 
@@ -24,7 +23,6 @@ void split_line(char *line, argv_data_t *argv)
 
 		if (result == NULL)
 			argv->args[argv->position] = result;
-		else
-			argv->args[argv->position] = strdup(result);
+		else argv->args[argv->position] = strdup(result);
 	}
 }

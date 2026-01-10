@@ -1,5 +1,10 @@
 #include "main.h"
 
+/**
+ * execute- creates fork to execute the valid command
+ * @argv: pointer to argv to free
+ * Return: 0 on success 1 on failure
+ */
 
 int execute(argv_data_t *argv)
 {
@@ -22,7 +27,7 @@ int execute(argv_data_t *argv)
 		if (execve_result == -1)
 			return (1);
 	}
-	else 
+	else
 		wait(&status);
 
 	return (0);

@@ -1,5 +1,10 @@
 #include "main.h"
 
+/**
+* setup_command_queue - mallocs command_queue sets up elements inside struct
+* @command_queue: pointer to command_queue to set up
+* Return: command_queue;
+*/
 command_queue_t *setup_command_queue(command_queue_t *command_queue)
 {
 	int queue_size = 50;
@@ -29,6 +34,11 @@ command_queue_t *setup_command_queue(command_queue_t *command_queue)
 	return (command_queue);
 }
 
+/**
+* cleanup_command_queue - frees elements inside command_queue and command_queue
+* @command_queue: pointer to command_queue to free
+* Return: void;
+*/
 void cleanup_command_queue(command_queue_t *command_queue)
 {
 	command_queue->position = 0;
@@ -42,6 +52,4 @@ void cleanup_command_queue(command_queue_t *command_queue)
 
 	free(command_queue);
 	command_queue = NULL;
-
-	return;
 }

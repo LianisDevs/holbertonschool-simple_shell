@@ -13,7 +13,7 @@ int split_search_path(argv_data_t *argv)
 	while (split_path)
 	{
 		/* need to check for file in split_path*/
-		result = search_dir(split_path, argv);
+		result = search_dir(argv, split_path);
 
 		if (result == 0)
 			return (0);
@@ -23,7 +23,7 @@ int split_search_path(argv_data_t *argv)
 	return (1);
 }
 
-int search_dir(char *split_path, argv_data_t *argv)
+int search_dir(argv_data_t *argv, char *split_path)
 {
 	DIR *dir;
 	struct dirent *dir_struct;
@@ -31,10 +31,15 @@ int search_dir(char *split_path, argv_data_t *argv)
 	char *temp;
 	char buffer[1024];
 
+	if (argv->args[0] == NULL) {
+		return (0);
+	}
+
 	dir = opendir(split_path);
 
 	if (dir == NULL)
 		return (1);
+
 
 	while ((dir_struct = readdir(dir)) != NULL)
 	{
