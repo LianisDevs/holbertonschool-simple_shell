@@ -53,7 +53,7 @@ This repo contains all the files to run a simple UNIX command-line interpreter/ 
 or built-in commands like:
 ```
 (:  exit 
-(;  env
+(:  env
 ```
 ---
 
@@ -120,7 +120,7 @@ or built-in commands like:
     *   split_line() takes the command and splits the line by spaces and newlines and putting each split in args
 ---
 
-### Authors 
+### Author 
 
 * Liani Mckeown <lianisdevs@gmail.com>
 ---
