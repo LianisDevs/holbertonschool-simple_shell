@@ -11,7 +11,7 @@ This repository contains all the files to run a simple UNIX command-line interpr
 - [Installation](#installation)
 - [Usage](#usage)
 - [Files](#files)
-- [Authors](#authors)
+- [Author](#author)
 
 ---
 
