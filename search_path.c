@@ -1,5 +1,10 @@
 #include "main.h"
 
+/**
+ * split_search_path - splits path by delim to check for file in each directory
+ * @argv: pointer to argv
+ * Return: 0 on success 1 on failure
+ */
 int split_search_path(argv_data_t *argv)
 {
 	char *split_path;
@@ -12,7 +17,7 @@ int split_search_path(argv_data_t *argv)
 
 	while (split_path)
 	{
-		/* need to check for file in split_path*/
+		/*check for file in directory*/
 		result = search_dir(argv, split_path);
 
 		if (result == 0)
@@ -23,6 +28,14 @@ int split_search_path(argv_data_t *argv)
 	return (1);
 }
 
+
+/**
+ * search_dir - opens, reads and closes each directory
+ *				looking for executable file
+ * @argv: pointer to argv
+ * @split_path: pointer to split_path
+ * Return: 0 on success, 1 on failure
+ */
 int search_dir(argv_data_t *argv, char *split_path)
 {
 	DIR *dir;
@@ -31,9 +44,8 @@ int search_dir(argv_data_t *argv, char *split_path)
 	char *temp;
 	char buffer[1024];
 
-	if (argv->args[0] == NULL) {
+	if (argv->args[0] == NULL)
 		return (0);
-	}
 
 	dir = opendir(split_path);
 
@@ -43,10 +55,12 @@ int search_dir(argv_data_t *argv, char *split_path)
 
 	while ((dir_struct = readdir(dir)) != NULL)
 	{
-		if ((result = strcmp(argv->args[0], dir_struct->d_name)) == 0)
+		result = strcmp(argv->args[0], dir_struct->d_name);
+
+		if (result == 0)
 		{
 			temp = strdup(argv->args[0]);
-			
+
 			free(argv->args[0]);
 
 			sprintf(buffer, "%s/%s", split_path, temp);
@@ -57,11 +71,9 @@ int search_dir(argv_data_t *argv, char *split_path)
 			break;
 		}
 	}
+	close_check = closedir(dir);
 
-	if ((close_check = closedir(dir)) == -1)
-		return (1);
-
-	if (result != 0)
+	if (close_check == -1 || result != 0)
 		return (1);
 
 	return (0);

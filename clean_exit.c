@@ -10,10 +10,10 @@
 void exit_success(argv_data_t *argv,
 				  command_queue_t *command_queue, char *line)
 {
-	cleanup_command_queue(command_queue);
-
 	if (line)
 		free(line);
+
+	cleanup_command_queue(command_queue);
 
 	if (argv)
 		cleanup_argv(argv);

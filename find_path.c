@@ -1,21 +1,24 @@
 #include "main.h"
 
 /**
- * find_path - searches through the directories in PATH for the desired executable
+ * find_path - searches through the directories in PATH
+ *			   for the desired executable
  * @argv: pointer to argv
- * Return: 0 on success 1 on failure
+ * @command_queue: pointer to command_queue to free if failure
+ * @line: pointer to line to free if failure
+ * Return: 0 on success on exit_command_not_found on error
  */
-int find_path(argv_data_t *argv)
+int find_path(argv_data_t *argv, command_queue_t *command_queue, char *line)
 {
 	int result;
 
-	get_path(argv);
+	get_path(argv, command_queue, line);
 	if (argv->path == NULL)
-		return (1);
+		exit_command_not_found(argv, command_queue, line);
 
 	result = split_search_path(argv);
 	if (result == 1)
-		return (1);
+		exit_command_not_found(argv, command_queue, line);
 
 	return (0);
 }
@@ -23,27 +26,26 @@ int find_path(argv_data_t *argv)
 /**
  * get_path - own version of getenv. Searches through environ for PATH string
  * @argv: pointer to argv
- * Return: if PATH is found return PATH else return NULL
+ * @command_queue: pointer to command_queue to free if failure
+ * @line: pointer to line to free if failure
+ * Return: if PATH is found return PATH on failure exit_command_not_found
  */
-void get_path(argv_data_t *argv)
+void get_path(argv_data_t *argv, command_queue_t *command_queue, char *line)
 {
-	int is_path, i;
+	int is_path, i = 0;
 	size_t n = 5;
 	char *path, *path_copy;
 	const char *delim = "=";
 
-	i = 0;
 	while (environ[i] != NULL)
 	{
 		/* comparing i element in environ array for PATH=*/
 		is_path = strncmp(environ[i], "PATH=", n);
 
-		/* PATH= string found*/
 		if (is_path == 0)
 		{
 			path_copy = strdup(environ[i]);
-
-			/*this gives us just PATH before the =, need to call strtok again*/
+			/*PATH before the =, need to call strtok again*/
 			path = strtok(path_copy, delim);
 
 			if (strcmp(path, "PATH1") == 0)
@@ -52,7 +54,7 @@ void get_path(argv_data_t *argv)
 				return;
 			}
 
-			/*this gives us the string after the =, actual path we want to add to argv->path*/
+			/*string after the = actual path we want to add to argv->path*/
 			path = strtok(NULL, delim);
 
 			if (path != NULL)
@@ -60,8 +62,7 @@ void get_path(argv_data_t *argv)
 				if (strcmp(path, "") == 0)
 				{
 					free(path_copy);
-					argv->path = NULL;
-					return;
+					exit_command_not_found(argv, command_queue, line);
 				}
 				argv->path = strdup(path);
 			}
@@ -73,10 +74,10 @@ void get_path(argv_data_t *argv)
 }
 
 /**
- * valid_env - checks if environ is valid
+ * valid_env - checks if environ is valid by searching for PATH= string
  * @argv: pointer to argv
- * @command_queue: pointer to command_queue
- * @line: pointer to line
+ * @command_queue: pointer to command_queue to free if failure
+ * @line: pointer to line to free if failure
  * Return: boolean 0 = false 1 = true
  */
 int valid_env(argv_data_t *argv, command_queue_t *command_queue, char *line)
@@ -98,7 +99,7 @@ int valid_env(argv_data_t *argv, command_queue_t *command_queue, char *line)
 	i = 0;
 	while (environ[i] != NULL)
 	{
-		/*comparing i element in environ array for PATH= which is n size since we don't care at this stage about the rest of the PATH string*/
+		/*comparing i element in environ array for PATH= which is n size*/
 		is_path = strncmp(environ[i], "PATH=", n);
 
 		/* PATH= string found*/
