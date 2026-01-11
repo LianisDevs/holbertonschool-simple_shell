@@ -49,11 +49,11 @@ This repo contains all the files to run a simple UNIX command-line interpreter/ 
 
 ### Usage
 
-1. Run program in interactive mode
+* Run program in interactive mode
 ```
 >  ./hsh
 ```
-2. Use system commands like:
+Use system commands like:
 ```
 (:  ls -l
 (:  pwd
@@ -63,7 +63,7 @@ or built-in commands like:
 (:  exit 
 (:  env
 ```
-3. Run program in non-interactive mode with system and/or built-in commands
+* Run program in non-interactive mode with system and/or built-in commands
 Multiple commands:
 ```
 >  echo "ls
