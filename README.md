@@ -1,6 +1,6 @@
 # SIMPLE SHELL
 
-This repo contains all the files to run a simple UNIX command-line interpreter/ simple shell. This program replicates the basic functionalities of a standard shell like sh or bash. Completed as the final project for Holberton School- Sprint 1 Programming in C.
+This repository contains all the files to run a simple UNIX command-line interpreter/ simple shell. This program replicates the basic functionalities of a standard shell like sh or bash. Completed as the final project for Holberton School- Sprint 1 Programming in C.
 
 ---
 
@@ -11,7 +11,7 @@ This repo contains all the files to run a simple UNIX command-line interpreter/ 
 - [Installation](#installation)
 - [Usage](#usage)
 - [Files](#files)
-- [Authors]((#authors)
+- [Authors](#authors)
 
 ---
 
