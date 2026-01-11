@@ -1,0 +1,42 @@
+.TH hsh 1
+.SH NAME
+hsh \- simple UNIX command interpreter
+.SH SYNOPSIS
+.B ./hsh 
+
+.B echo
+.I ["COMMAND/S..."]
+.B | ./hsh
+
+.SH DESCRIPTION
+.B hsh 
+is a command line interpreter that executes commands from the user in a UNIX environment.
+
+.SH EXAMPLES
+.EX
+Run the shell interactively and use system commands: ls, pwd, mv, cp
+>./hsh
+(: ls
+
+Or the built-in commands: exit, env
+>./hsh
+(: env
+
+.EE
+
+.EX
+Run the shell not interactively and pass the commands as a string argument to the shell:
+Single command: 
+>echo "env" | ./hsh
+
+Multiple commands: 
+>echo "ls -a
+>env
+>pwd" | ./hsh
+.EE
+
+.SH AUTHOR
+Written by Liani McKeown. 
+
+.SH DATE
+January 2026
