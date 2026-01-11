@@ -3,6 +3,7 @@
 This repo contains all the files to run a simple UNIX command-line interpreter/ simple shell. This program replicates the basic functionalities of a standard shell like sh or bash. Completed as the final project for Holberton School- Sprint 1 Programming in C.
 
 ---
+
 ### Table of Contents
 
 - [Features](#features)
@@ -13,15 +14,20 @@ This repo contains all the files to run a simple UNIX command-line interpreter/ 
 - [Authors]((#authors)
 
 ---
+
 ### Features
 - Display a prompt and wait for user input
 - Execute built-in commands like exit and env
 - Execute system commands found in PATH
 - Handle command arguments
+
 ---
+
 ### Requirements
 - All C files in this directory are compiled using gcc -Wall -Werror -Wextra -pedantic -std=gnu89
+
 ---
+
 ### Installation
 
 1. Clone the repository to your 
@@ -38,7 +44,9 @@ This repo contains all the files to run a simple UNIX command-line interpreter/ 
 ```
 >  gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
 ```
+
 ---
+
 ### Usage
 
 1. Run program in interactive mode
@@ -55,6 +63,18 @@ or built-in commands like:
 (:  exit 
 (:  env
 ```
+3. Run program in non-interactive mode with system and/or built-in commands
+Multiple commands:
+```
+>  echo "ls
+>  env
+>  pwd" | ./hsh
+```
+Single commands:
+```
+>  echo "ls -l" | ./hsh
+```
+
 ---
 
 ### Files
@@ -123,4 +143,5 @@ or built-in commands like:
 ### Author 
 
 * Liani Mckeown <lianisdevs@gmail.com>
+
 ---
